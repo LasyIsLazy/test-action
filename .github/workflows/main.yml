@@ -8,6 +8,10 @@ jobs:
       # To use this repository's private action, you must check out the repository
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Shell
+        run: |
+          pwd
+          ls
       - name: Hello world action step
         uses: ./hello-world-javascript-action # Uses an action in the root directory
         id: hello
