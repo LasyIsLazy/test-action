@@ -7,8 +7,8 @@ const fs = require('fs');
 
 (async function() {
   // Get images
-  await getImg();
   const files = getAllMd();
+  await getImg(files);
 
   // Upload img-map.json
   for (let index = 0; index < files.length; index++) {

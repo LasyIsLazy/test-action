@@ -2,6 +2,7 @@ const fs = require('fs');
 const commonMark = require('commonmark');
 const axios = require('axios');
 const ora = require('ora');
+const path = require('path');
 
 const getAllImg = markdown => {
   if (!markdown) return;
@@ -25,19 +26,18 @@ const getAllImg = markdown => {
   };
 };
 
-async function getImg() {
-  const dir = fs.readdirSync('./posts');
+async function getImg(files = []) {
   if (!fs.existsSync('./img')) {
     fs.mkdirSync('./img');
   }
 
   const imgMap = {};
   const jobs = [];
-  dir.forEach(fileName => {
-    const text = fs.readFileSync('./posts/' + fileName, { encoding: 'utf8' });
+  files.forEach(filePath => {
+    const text = fs.readFileSync(filePath, { encoding: 'utf8' });
     const { uniqueSrcList } = getAllImg(text);
-    imgMap[fileName] = uniqueSrcList;
-    console.log(`${uniqueSrcList.length + 1} images in '${fileName}' `);
+    imgMap[path.basename(filePath)] = uniqueSrcList;
+    console.log(`${uniqueSrcList.length + 1} images in '${filePath}' `);
     uniqueSrcList.forEach(url => {
       jobs.push(() => {
         const spinner = ora(`Download ${url}`).start();
