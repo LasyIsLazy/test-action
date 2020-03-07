@@ -1,7 +1,10 @@
+/**
+ * API: https://developer.github.com/v3/repos/contents
+ */
 const axios = require('axios');
 const BASE_URL = 'https://api.github.com';
 
-async function upload(content, { Authorization, fileName }) {
+async function upload(base64Content, { Authorization, fileName }) {
   // GitHub API will decode the url
   const url =
     BASE_URL +
@@ -30,7 +33,7 @@ async function upload(content, { Authorization, fileName }) {
       data: {
         message: 'Auto backup',
         sha,
-        content
+        content: base64Content
       }
     }).then(({ data }) => {
       const { path, sha: currentSha } = data.content;
@@ -56,7 +59,7 @@ async function upload(content, { Authorization, fileName }) {
     },
     data: {
       message: 'Auto backup',
-      content
+      content: base64Content
     }
   }).then(({ data }) => {
     return { uploadPath: data.content.path };
