@@ -21,7 +21,7 @@ async function upload(base64Content, { Authorization, fileName }) {
       Authorization,
       'Content-Type': 'application/json'
     }
-  });
+  }).catch(err => err);
   const sha = res.data.sha;
   if (res.status === 200) {
     return axios({
