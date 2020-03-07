@@ -7,8 +7,11 @@ const REMOTE_DIR = '/test2/';
 
 async function upload(base64Content, { Authorization, fileName }) {
   // GitHub API will decode the url
-  const url = BASE_URL + '/repos/LasyIsLazy/img/contents' + REMOTE_DIR;
-  encodeURIComponent(fileName);
+  const url =
+    BASE_URL +
+    '/repos/LasyIsLazy/img/contents' +
+    REMOTE_DIR +
+    encodeURIComponent(fileName);
   // if content exists
   const res = await axios({
     method: 'get',
