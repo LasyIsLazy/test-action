@@ -21,7 +21,7 @@ const core = require('@actions/core');
         }
       );
       spinner.succeed(
-        `Upload finished: ${filePath}, upload path: ${uploadPath}`
+        `Upload succeed: ${filePath}, upload path: ${uploadPath}`
       );
     } catch (error) {
       if (
@@ -36,4 +36,10 @@ const core = require('@actions/core');
       }
     }
   }
+  const spinner = ora(`Upload: img-map.json`).start();
+  await upload(fs.readFileSync('./img-map.json').toString('base64'), {
+    Authorization: `Bearer ${core.getInput('ACCESS_TOKEN')}`,
+    fileName
+  });
+  spinner.succeed(`Upload succeed: img-map.json`);
 })();
