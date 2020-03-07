@@ -11,7 +11,6 @@ categories:
 
 # 使用 GitHub Actions 自动部署博客
 
-测试
 本篇以  Github Pages 为例，并且假设你已经掌握了 GitHub Pages 的使用。
 
 假设你的文章和静态文件在同一个仓库，使用 `master` 分支管理文章和代码，使用 `gh-pages` 分支存放生成的静态文件
