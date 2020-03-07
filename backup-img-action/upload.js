@@ -5,7 +5,7 @@ function upload(content, { Authorization, fileName }) {
   // GitHub API will decode the url
   const url =
     BASE_URL +
-    '/repos/LasyIsLazy/test-action/contents/test/' +
+    '/repos/LasyIsLazy/img/contents/test/' +
     encodeURIComponent(fileName);
   return axios({
     method: 'put',
