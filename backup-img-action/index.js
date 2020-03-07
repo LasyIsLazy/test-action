@@ -39,7 +39,7 @@ const core = require('@actions/core');
   const spinner = ora(`Upload: img-map.json`).start();
   await upload(fs.readFileSync('./img-map.json').toString('base64'), {
     Authorization: `Bearer ${core.getInput('ACCESS_TOKEN')}`,
-    fileName
+    fileName: 'img-map.json'
   });
   spinner.succeed(`Upload succeed: img-map.json`);
 })();
