@@ -51,7 +51,7 @@ upa
 
 令牌名字一定要叫：`ACCESS_TOKEN`，这是后面的 Action 需要用的。
 
-![1W35i4.png](https://s2.ax1x.com/2020/02/08/1W35i4.png)
+
 
 ## 编写 workflow 文件
 
