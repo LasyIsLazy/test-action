@@ -7,5 +7,5 @@ jobs:
     runs-on: ubuntu-latest
     name: Echo sth
     steps:
-    - name: hello
+      - name: hello
         run: echo "HELLO YA"
