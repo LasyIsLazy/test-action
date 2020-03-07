@@ -3,7 +3,7 @@
  */
 const axios = require('axios');
 const BASE_URL = 'https://api.github.com';
-const REMOTE_DIR = '/blog/';
+const REMOTE_DIR = '/test2/';
 
 async function upload(base64Content, { Authorization, fileName }) {
   // GitHub API will decode the url

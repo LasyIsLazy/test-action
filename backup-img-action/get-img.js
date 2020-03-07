@@ -3,6 +3,7 @@ const commonMark = require('commonmark');
 const axios = require('axios');
 const ora = require('ora');
 const path = require('path');
+const IMG_SAVE_PATH = './img';
 
 const getAllImg = markdown => {
   if (!markdown) return [];
@@ -24,8 +25,8 @@ const getAllImg = markdown => {
 
 async function getImg(files = []) {
   const savePaths = [];
-  if (!fs.existsSync('./img')) {
-    fs.mkdirSync('./img');
+  if (!fs.existsSync(IMG_SAVE_PATH)) {
+    fs.mkdirSync(IMG_SAVE_PATH);
   }
 
   const imgMap = {};
