@@ -34,9 +34,11 @@ async function upload(content, { Authorization, fileName }) {
       }
     }).then(({ data }) => {
       const { path, sha: currentSha } = data.content;
-      // sha: remote file's SHA
-      // currentSha: uploaded file's SHA
-      // Identify if they are same file
+      /**
+       * - sha: remote file's SHA
+       * - currentSha: uploaded file's SHA
+       * Can be use to identify if they are same file
+       */
       return {
         uploadPath: path,
         sha,
