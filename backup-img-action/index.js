@@ -13,7 +13,7 @@ const core = require('@actions/core');
     const filePath = './img/' + fileName;
     const spinner = ora(`Upload: ${filePath}`).start();
     try {
-      const { uploadPath } = await upload(
+      const { uploadPath, sha } = await upload(
         fs.readFileSync(filePath).toString('base64'),
         {
           Authorization: `Bearer ${core.getInput('ACCESS_TOKEN')}`,
@@ -23,17 +23,12 @@ const core = require('@actions/core');
       spinner.succeed(
         `Upload succeed: ${filePath}, upload path: ${uploadPath}`
       );
-    } catch (error) {
-      if (
-        error.response &&
-        error.response.data.message ===
-          `Invalid request.\n\n"sha" wasn't supplied.`
-      ) {
-        spinner.succeed(`Upload alright exists: ${filePath}`);
-      } else {
-        spinner.fail(`Upload failed: ${filePath}`);
-        console.log(error);
+      if (sha) {
+        spinner.succeed(`Upload repleced succeed: ${filePath}`);
       }
+    } catch (error) {
+      spinner.fail(`Upload failed: ${filePath}`);
+      console.log(error);
     }
   }
   const spinner = ora(`Upload: img-map.json`).start();
