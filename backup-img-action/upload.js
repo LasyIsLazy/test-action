@@ -22,12 +22,10 @@ async function upload(base64Content, { Authorization, fileName }) {
       'Content-Type': 'application/json'
     }
   }).catch(err => {
-    if (err.status === 404) {
-      return err;
-    } else {
+    if (err.toString() !== `Error: Request failed with status code 404`) {
       console.log(err);
-      return err;
     }
+    return { data: { sha: '' } };
   });
   const sha = (res.data && res.data.sha) || '';
   if (res.status === 200) {
