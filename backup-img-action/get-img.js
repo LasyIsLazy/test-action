@@ -35,7 +35,7 @@ async function getImg(files = []) {
     const text = fs.readFileSync(filePath, { encoding: 'utf8' });
     const srcList = getAllImg(text);
     imgMap[path.basename(filePath)] = srcList;
-    console.log(`${srcList.length + 1} images in '${filePath}' `);
+    console.log(`${srcList.length} images in '${filePath}' `);
     srcList.forEach(url => {
       jobs.push(() => {
         const spinner = ora(`Download ${url}`).start();
