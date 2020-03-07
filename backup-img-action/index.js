@@ -3,11 +3,12 @@ const upload = require('./upload.js');
 const ora = require('ora');
 const core = require('@actions/core');
 const getAllMd = require('./get-all-md.js');
+const DIR_PATH = './posts'
 const fs = require('fs');
 
 (async function() {
   // Get images
-  const files = getAllMd('./posts');
+  const files = getAllMd(DIR_PATH);
   await getImg(files);
 
   // Upload img-map.json
