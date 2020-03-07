@@ -7,7 +7,7 @@ const fs = require('fs');
 
 (async function() {
   // Get images
-  const files = getAllMd();
+  const files = getAllMd('./posts');
   await getImg(files);
 
   // Upload img-map.json

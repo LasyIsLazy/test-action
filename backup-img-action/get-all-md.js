@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 function getAllMd(curPath, paths = []) {
   const dir = fs.readdirSync(curPath);
   dir.forEach(item => {
