@@ -2,15 +2,17 @@ const getImg = require('./get-img');
 const upload = require('./upload.js');
 const ora = require('ora');
 const core = require('@actions/core');
+const getAllMd = require('./get-all-md.js');
+const fs = require('fs');
+
 (async function() {
   // Get images
   await getImg();
+  const files = getAllMd();
 
   // Upload img-map.json
-  const fs = require('fs');
-  const dir = fs.readdirSync('./img');
-  for (let index = 0; index < dir.length; index++) {
-    const fileName = dir[index];
+  for (let index = 0; index < files.length; index++) {
+    const fileName = files[index];
 
     const filePath = './img/' + fileName;
     const spinner = ora(`Upload: ${filePath}`).start();
