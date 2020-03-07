@@ -17,8 +17,8 @@ async function upload(content, { Authorization, fileName }) {
       'Content-Type': 'application/json'
     }
   });
+  const sha = res.data.sha;
   if (res.status === 200) {
-    const sha = res.data.sha;
     return axios({
       method: 'put',
       url,
@@ -33,10 +33,14 @@ async function upload(content, { Authorization, fileName }) {
         content
       }
     }).then(({ data }) => {
-      const { path, sha } = data.content;
+      const { path, sha: currentSha } = data.content;
+      // sha: remote file's SHA
+      // currentSha: uploaded file's SHA
+      // Identify if they are same file
       return {
         uploadPath: path,
-        sha
+        sha,
+        currentSha
       };
     });
   }
