@@ -4,16 +4,13 @@
 const axios = require('axios')
 const path = require('path')
 const BASE_URL = 'https://api.github.com'
-const REMOTE_DIR = '/test2/'
-const USER = `LasyIsLazy`
-const REPO = `img`
 
-async function upload(base64Content, { Authorization, fileName }) {
+async function upload(base64Content, { Authorization, fileName, remoteDir, username,repo }) {
   const url =
     BASE_URL +
     path.posix.join(
-      `/repos/${USER}/${REPO}/contents`,
-      REMOTE_DIR,
+      `/repos/${username}/${repo}/contents`,
+      remoteDir,
       // GitHub API will decode the url
       encodeURIComponent(fileName)
     )
