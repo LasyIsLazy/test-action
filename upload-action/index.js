@@ -37,12 +37,16 @@ async function uploadAll() {
     const base64Cotent = fs.readFileSync(curPath, {
       encoding: 'base64'
     })
-    await upload(base64Cotent, {
-      Authorization: `Bearer ${core.getInput('access-token')}`,
-      username: core.getInput('username'),
-      repo: core.getInput('repo'),
-      remotePath
-    })
+    try {
+      await upload(base64Cotent, {
+        Authorization: `Bearer ${core.getInput('access-token')}`,
+        username: core.getInput('username'),
+        repo: core.getInput('repo'),
+        remotePath
+      })
+    } catch (error) {
+      core.setFailed(error)
+    }
   }
 }
 
