@@ -30,7 +30,7 @@ async function uploadAll() {
     const filePath = filePaths[index]
     const fileName = path.basename(filePath)
     console.log('Upload', fileName)
-    const base64Cotent = fs.readdirSync(filePath, {
+    const base64Cotent = fs.readFileSync(filePath, {
       encoding: 'base64'
     })
     await upload(base64Cotent, {
