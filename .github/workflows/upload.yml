@@ -19,6 +19,7 @@ jobs:
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
           file-name: name.file
+          file-path: t1
           username: LasyIsLazy
           repo: img
           remote-dir: /t1/t2

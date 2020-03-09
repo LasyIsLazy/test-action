@@ -2,10 +2,9 @@ const fs = require('fs')
 const path = require('path')
 const upload = require('./upload.js')
 const core = require('@actions/core')
-const now = new Date()
 const filePath = core.getInput('file-path')
 if (!fs.existsSync(filePath)) {
-  core.setFailed(`${filePath} doesn't exist`)
+  core.setFailed(`filePath doesn't exist: ${filePath}`)
   return
 }
 
