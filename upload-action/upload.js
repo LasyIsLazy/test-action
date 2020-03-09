@@ -5,14 +5,16 @@ const axios = require('axios')
 const path = require('path')
 const BASE_URL = 'https://api.github.com'
 
-async function upload(base64Content, { Authorization, fileName, remoteDir, username,repo }) {
+async function upload(
+  base64Content,
+  { Authorization, remotePath, username, repo }
+) {
   const url =
     BASE_URL +
     path.posix.join(
       `/repos/${username}/${repo}/contents`,
-      remoteDir,
-      // GitHub API will decode the url
-      encodeURIComponent(fileName)
+      // GitHub API will decode the remotePath
+      encodeURIComponent(remotePath)
     )
   // if content exists
   const res = await axios({

@@ -14,4 +14,6 @@ function getAllFilePaths(curPath, paths = []) {
   return paths
 }
 
-console.log(getAllFilePaths('t1'))
+console.log(getAllFilePaths('d://code/github/test-action/t1'))
+console.log(path.relative('/a/b/c/d/', '/a/b'))
+console.log(path.relative('/a/b/','/a/b/c/d/' ))
