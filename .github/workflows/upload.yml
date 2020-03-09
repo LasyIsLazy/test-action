@@ -17,4 +17,8 @@ jobs:
       - name: Upload
         uses: ./upload-action
         with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          access-token: ${{ secrets.ACCESS_TOKEN }}
+          file-name: name.file
+          username: LasyIsLazy
+          repo: img
+          remote-dir: /t1/t2
