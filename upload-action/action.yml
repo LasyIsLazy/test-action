@@ -1,0 +1,9 @@
+name: 'Test upload'
+description: 'Test upload Test upload Test upload'
+inputs:
+  ACCESS_TOKEN:
+    description: 'Token access to repository'
+    required: true
+runs:
+  using: 'node12'
+  main: 'index.js'

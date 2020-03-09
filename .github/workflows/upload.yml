@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - master
+jobs:
+  upload_job:
+    runs-on: ubuntu-latest
+    name: Upload
+    steps:
+      # To use this repository's private action, you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+      - name: install
+        run: yarn
+      - name: Upload
+        uses: ./upload-action
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
