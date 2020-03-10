@@ -6,10 +6,10 @@ const inputPath = core.getInput('file-path')
 const inputRemoteDir = core.getInput('remote-dir') || ''
 const inputUsername = core.getInput('username')
 const inputRepo = core.getInput('repo')
-core.debug('inputPath', inputPath)
-core.debug('inputRemoteDir', inputRemoteDir)
-core.debug('inputUsername', inputUsername)
-core.debug('inputRepo', inputRepo)
+core.debug('inputPath' + inputPath)
+core.debug('inputRemoteDir' + inputRemoteDir)
+core.debug('inputUsername' + inputUsername)
+core.debug('inputRepo' + inputRepo)
 if (!fs.existsSync(inputPath)) {
   core.setFailed(`filePath doesn't exist: ${inputPath}`)
   return
