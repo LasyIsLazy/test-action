@@ -31,38 +31,12 @@ async function upload(
     if (err.toString() !== `Error: Request failed with status code 404`) {
       console.log(err)
     }
+    // 404 means remote repository does not have this file, so we do not need SHA
     return { data: { sha: '' } }
   })
   const sha = (res.data && res.data.sha) || ''
   core.debug(`Get SHA: ${sha}`)
-  if (res.status === 200) {
-    return axios({
-      method: 'put',
-      url,
-      responseType: 'application/json',
-      headers: {
-        Authorization,
-        'Content-Type': 'application/json'
-      },
-      data: {
-        message: 'Auto backup',
-        sha,
-        content: base64Content
-      }
-    }).then(({ data }) => {
-      const { path, sha: currentSha } = data.content
-      /**
-       * - sha: remote file's SHA
-       * - currentSha: uploaded file's SHA
-       * Can be use to identify if they are same file
-       */
-      return {
-        uploadPath: path,
-        sha,
-        currentSha
-      }
-    })
-  }
+
   return axios({
     method: 'put',
     url,
@@ -73,10 +47,21 @@ async function upload(
     },
     data: {
       message: 'Auto backup',
+      sha,
       content: base64Content
     }
   }).then(({ data }) => {
-    return { uploadPath: data.content.path }
+    const { path, sha: currentSha } = data.content
+    /**
+     * - sha: remote file's SHA
+     * - currentSha: uploaded file's SHA
+     * Can be use to identify if they are same file
+     */
+    return {
+      uploadPath: path,
+      sha,
+      currentSha
+    }
   })
 }
 module.exports = upload
