@@ -35,7 +35,8 @@ async function uploadAll() {
   for (let index = 0; index < filePaths.length; index++) {
     const curPath = filePaths[index]
     const remotePath = path.join(
-      inputRemoteDir,
+      // `remotePath` can not start with `/`
+      inputRemoteDir.replace(/^\//, ''),
       path.relative(inputPath, curPath)
     )
     console.log(`Upload ${curPath} to ${remotePath}`)
