@@ -4,7 +4,12 @@ const upload = require('./upload.js')
 const core = require('@actions/core')
 const inputPath = core.getInput('file-path')
 const inputRemoteDir = core.getInput('remote-dir') || ''
-console.log('')
+const inputUsername = core.getInput('username')
+const inputRepo = core.getInput('repo')
+core.debug('inputPath', inputPath)
+core.debug('inputRemoteDir', inputRemoteDir)
+core.debug('inputUsername', inputUsername)
+core.debug('inputRepo', inputRepo)
 if (!fs.existsSync(inputPath)) {
   core.setFailed(`filePath doesn't exist: ${inputPath}`)
   return
@@ -40,8 +45,8 @@ async function uploadAll() {
     try {
       await upload(base64Cotent, {
         Authorization: `Bearer ${core.getInput('access-token')}`,
-        username: core.getInput('username'),
-        repo: core.getInput('repo'),
+        username: inputUsername,
+        repo: inputRepo,
         remotePath
       })
     } catch (error) {
