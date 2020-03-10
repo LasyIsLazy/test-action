@@ -4,6 +4,18 @@ inputs:
   ACCESS_TOKEN:
     description: 'Token access to repository'
     required: true
+  file-path:
+    description: 'Local file path/directory'
+    required: true
+  username:
+    description: 'GitHub username'
+    required: true
+  repo:
+    description: 'Repository name'
+    required: true
+  remote-dir:
+    description: 'Remote repository file path/directory'
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'
