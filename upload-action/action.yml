@@ -1,5 +1,6 @@
 name: 'Test upload'
-description: 'Test upload Test upload Test upload'
+author: 'LasyIsLazy'
+description: 'Upload file to your GitHub repository with Node.js'
 inputs:
   ACCESS_TOKEN:
     description: 'Token access to repository'
@@ -14,8 +15,9 @@ inputs:
     description: 'Repository name'
     required: true
   remote-dir:
-    description: 'Remote repository file path/directory'
-    required: true
+    description: 'Remote repository file path/directory, default: The root of repository'
+    required: false
+    default: ''
 runs:
   using: 'node12'
   main: 'index.js'

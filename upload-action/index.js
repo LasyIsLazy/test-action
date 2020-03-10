@@ -3,7 +3,7 @@ const path = require('path')
 const upload = require('./upload.js')
 const core = require('@actions/core')
 const inputPath = core.getInput('file-path')
-const inputRemoteDir = core.getInput('remote-dir') || ''
+const inputRemoteDir = core.getInput('remote-dir')
 const inputUsername = core.getInput('username')
 const inputRepo = core.getInput('repo')
 core.debug('inputPath: ' + inputPath)
