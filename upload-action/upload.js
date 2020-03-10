@@ -4,6 +4,7 @@
 const axios = require('axios')
 const path = require('path')
 const BASE_URL = 'https://api.github.com'
+const core = require('@actions/core')
 
 async function upload(
   base64Content,
@@ -16,6 +17,7 @@ async function upload(
       // GitHub API will decode the remotePath
       encodeURIComponent(remotePath)
     )
+  core.debug(`Request URL: ${url}`)
   // if content exists
   const res = await axios({
     method: 'get',
@@ -32,6 +34,7 @@ async function upload(
     return { data: { sha: '' } }
   })
   const sha = (res.data && res.data.sha) || ''
+  core.debug(`Get SHA: ${sha}`)
   if (res.status === 200) {
     return axios({
       method: 'put',
