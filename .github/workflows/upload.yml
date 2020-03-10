@@ -14,11 +14,11 @@ jobs:
         uses: actions/setup-node@v1
       - name: install
         run: yarn
-      - name: Upload
-        uses: ./upload-action
+      - name: Upload to GitHub
+        uses: LasyIsLazy/github-upload-action@v0.0.1-beta.1
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
-          file-path: t1
+          file-path: test.js
           username: LasyIsLazy
           repo: img
           # remote-dir: /r1
