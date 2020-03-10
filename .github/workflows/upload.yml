@@ -22,4 +22,4 @@ jobs:
           file-path: t1
           username: LasyIsLazy
           repo: img
-          remote-dir: /r1
+          remote-dir: r1
