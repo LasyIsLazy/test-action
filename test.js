@@ -32,3 +32,4 @@ function getAllMd(curPath, paths = []) {
 }
 const pths = getAllMd('./posts');
 console.log(pths.toString())
+
