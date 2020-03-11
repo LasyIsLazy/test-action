@@ -15,21 +15,28 @@ if (!fs.existsSync(inputPath)) {
   return
 }
 
-function getAllFilePaths(curPath, paths = []) {
-  const dir = fs.readdirSync(curPath)
-  dir.forEach(item => {
-    const itemPath = path.join(curPath, item)
-    const stat = fs.lstatSync(itemPath)
-    if (stat.isDirectory()) {
-      getAllFilePaths(itemPath, paths)
-    } else {
-      paths.push(itemPath)
-    }
-  })
-  return paths
+function getAllFilePaths(curPath) {
+  if (fs.lstatSync(curPath).isFile()) {
+    return [curPath]
+  }
+  function search(curPath, paths = []) {
+    const dir = fs.readdirSync(curPath)
+    dir.forEach(item => {
+      const itemPath = path.join(curPath, item)
+      const stat = fs.lstatSync(itemPath)
+      if (stat.isDirectory()) {
+        search(itemPath, paths)
+      } else {
+        paths.push(itemPath)
+      }
+    })
+    return paths
+  }
+  return search(curPath)
 }
 
 const filePaths = getAllFilePaths(inputPath)
+core.debug(`filePaths: ${filePaths}`)
 
 async function uploadAll() {
   for (let index = 0; index < filePaths.length; index++) {

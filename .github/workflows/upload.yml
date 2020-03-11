@@ -15,7 +15,7 @@ jobs:
       - name: install
         run: yarn
       - name: Upload to GitHub
-        uses: LasyIsLazy/github-upload-action@v0.0.1-beta.3
+        uses: ./github-upload-action
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
           file-path: test.js
