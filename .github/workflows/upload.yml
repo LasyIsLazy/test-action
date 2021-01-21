@@ -22,4 +22,4 @@ jobs:
           username: LasyIsLazy
           repo: img
           remote-dir: /tt1
- 
+          commit-message: upload files test
