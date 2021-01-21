@@ -5,7 +5,7 @@ branding:
   icon: 'upload'
   color: 'white'
 inputs:
-  ACCESS_TOKEN:
+  access-token:
     description: 'Token access to repository'
     required: true
   file-path:
@@ -21,6 +21,10 @@ inputs:
     description: 'Remote repository file path/directory, default: The root of repository'
     required: false
     default: ''
+  commit-message:
+    description: 'Git commit message, default: "upload"'
+    required: false
+    default: 'upload'
 runs:
   using: 'node12'
   main: 'index.js'
