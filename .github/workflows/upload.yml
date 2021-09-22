@@ -20,7 +20,7 @@ jobs:
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
           file-path: test/
-          username: LasyIsLazy
+          owner: LasyIsLazy
           repo: img
           remote-dir: /tt1
           commit-message: upload files test
