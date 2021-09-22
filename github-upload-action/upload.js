@@ -69,6 +69,7 @@ async function upload(
     }
   }).catch(err => {
     console.log(`Error uploading the file. Check if the branch [${branchName}] exists and if the access-token has write rights.`)
+    core.setFailed(err)
     return null
   })
 }
