@@ -30,6 +30,9 @@ async function upload(
     headers: {
       Authorization,
       'Content-Type': 'application/json'
+    },
+    data: {
+      ref: `refs/heads/${branchName}`
     }
   }).catch(err => {
     if (err.toString() !== 'Error: Request failed with status code 404') {
@@ -68,6 +71,9 @@ async function upload(
       currentSha
     }
   }).catch(err => {
+    if (err.toString() === 'Error: Request failed with status code 409') {
+      core.setFailed(`Conflict when there is a merge conflict or the commit's status checks failed`)
+    }
     console.log(`Error uploading the file. Check if the branch [${branchName}] exists and if the access-token has write rights.`)
     core.setFailed(err)
     return null
