@@ -21,6 +21,7 @@ async function upload(
       // GitHub API will decode the remotePath
       encodeURIComponent(remotePath)
     )
+  const ref = `refs/heads/${branchName}`
   core.debug(`Request URL: ${url}`)
   // if content exists
   const res = await axios({
@@ -32,7 +33,7 @@ async function upload(
       'Content-Type': 'application/json'
     },
     data: {
-      ref: `refs/heads/${branchName}`
+      ref
     }
   }).catch(err => {
     if (err.toString() !== 'Error: Request failed with status code 404') {
@@ -56,7 +57,8 @@ async function upload(
       message: commitMessage,
       sha,
       content: base64Content,
-      branch: branchName
+      branch: branchName,
+      ref
     }
   }).then(({ data }) => {
     const { path, sha: currentSha } = data.content
