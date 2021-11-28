@@ -16,7 +16,6 @@ async function upload(
             branchName,
         })}`
     )
-    core.debug(':heavy_check_mark: ✔️')
     const octokit = github.getOctokit(token)
 
     // Get SHA
@@ -73,6 +72,8 @@ async function upload(
         core.debug(JSON.stringify(response))
         throw new Error(message)
     }
+    core.debug(`✔️ Upload ${localPath} Done`)
+
 }
 
 module.exports = upload

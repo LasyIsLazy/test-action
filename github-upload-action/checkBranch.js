@@ -59,5 +59,6 @@ async function checkBranch({ token, owner, repo, branchName }) {
             `Created new branch with ref: ${data.ref} based on ${defaultBranch.name}`
         )
     }
+    core.debug('✔️ Check branch Done')
 }
 module.exports = checkBranch
