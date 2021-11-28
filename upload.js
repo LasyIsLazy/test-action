@@ -100,5 +100,5 @@ async function run() {
   );
 }
 run().then(() => 
-core.debug('Done')
+core.debug(':heavy_check_mark:Done')
 )
