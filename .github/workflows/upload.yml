@@ -23,5 +23,5 @@ jobs:
           owner: LasyIsLazy
           repo: img
           remote-dir: /tt1
-          branch-name: test
+          branch-name: test2
           commit-message: upload files test

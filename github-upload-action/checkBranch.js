@@ -1,69 +1,69 @@
 /**
  * API: https://docs.github.com/en/rest/reference/repos#get-a-branch
  */
- const path = require('path')
- const core = require('@actions/core')
-const github = require("@actions/github");
+const path = require('path')
+const core = require('@actions/core')
+const github = require('@actions/github')
 
  
- async function checkBranch(
-   { token, owner, repo, branchName }
- ) {
-  const octokit = github.getOctokit(token);
+async function checkBranch(
+    { token, owner, repo, branchName }
+) {
+    const octokit = github.getOctokit(token)
      
-   // load api url from context
-   let BASE_URL = process.env.GITHUB_API_URL
-   core.debug(`Using API url: ${BASE_URL}`)
-   core.debug(`Checking if branch exists with name ${branchName} in repo ${repo}`)
+    // load api url from context
+    let BASE_URL = process.env.GITHUB_API_URL
+    core.debug(`Using API url: ${BASE_URL}`)
+    core.debug(`Checking if branch exists with name ${branchName} in repo ${repo}`)
  
-   const url =
+    const url =
      BASE_URL +
      path.posix.join(
-       `/repos/${owner}/${repo}/branches`
+         `/repos/${owner}/${repo}/branches`
      )
-   core.debug(`Request URL: ${url}`)
-   // load all branches, since we need the info about the default branch as well
-   const res = await octokit.rest.repos.listBranches({owner, repo})
-   .then(({data}) => { 
-     // result succesful
-     let jsonResult = JSON.stringify(data);
-     core.debug(`Succesful API call with result: ${jsonResult}`)
-     return { data: data } 
-    })
-   .catch(err => {
-     if (err.toString() !== 'Error: Request failed with status code 404') {
-       console.log(err)
-     }
-     // errors should not happen
-     return { data: { } }
-   })
-   let branches = res.data
+    core.debug(`Request URL: ${url}`)
+    // load all branches, since we need the info about the default branch as well
+    const res = await octokit.rest.repos.listBranches({owner, repo})
+        .then(({data}) => { 
+            // result succesful
+            let jsonResult = JSON.stringify(data)
+            core.debug(`Succesful API call with result: ${jsonResult}`)
+            return { data: data } 
+        })
+        .catch(err => {
+            if (err.toString() !== 'Error: Request failed with status code 404') {
+                console.log(err)
+            }
+            // errors should not happen
+            return { data: { } }
+        })
+    let branches = res.data
 
-   let json = JSON.stringify(branches);
-   core.debug(`Branches: ${json}`)
+    let json = JSON.stringify(branches)
+    core.debug(`Branches: ${json}`)
 
-   if (branches == null) {
-       core.debug(`Error loading existing branches from API`)
-       return null
-   }
+    if (branches == null) {
+        core.debug('Error loading existing branches from API')
+        return null
+    }
 
-   // check if the branch name already exists
-   let branch = branches.find(function(branch) { return branch.name === branchName })
+    // check if the branch name already exists
+    let branch = branches.find(function(branch) { return branch.name === branchName })
 
-   if (branch) {
-    core.debug(`Branch with name ${branchName} already exists, continuing as normal`)
-    return { }
-   }
-   else {
-    console.log(`Need to create a new branch first with name ${branchName}`)
-    let defaultBranch = branches[0]
-    console.log(`Found default branch to branch of: ${defaultBranch.name} with sha: ${defaultBranch.commit.sha}`)
+    if (branch) {
+        core.debug(`Branch with name ${branchName} already exists, continuing as normal`)
+        return { }
+    }
+    else {
+        console.log(`Need to create a new branch first with name ${branchName}`)
+        let defaultBranch = branches[0]
+        console.log(`Found default branch to branch of: ${defaultBranch.name} with sha: ${defaultBranch.commit.sha}`)
 
-    let branchCreateUrl = BASE_URL +
+        let branchCreateUrl = BASE_URL +
       path.posix.join(
-        `/repos/${owner}/${repo}/git/refs`
+          `/repos/${owner}/${repo}/git/refs`
       )
-    core.debug(`Request URL to create new branch: ${branchCreateUrl}`)
+        core.debug(`Request URL to create new branch: ${branchCreateUrl}`)
         return {}
     // return axios({
     //     method: 'post',
@@ -88,6 +88,6 @@ const github = require("@actions/github");
     //     return null
     // })
     }
- }
- module.exports = checkBranch
+}
+module.exports = checkBranch
  
