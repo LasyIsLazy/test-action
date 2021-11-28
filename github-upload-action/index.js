@@ -28,7 +28,7 @@ if (inputRepo.indexOf('/') !== -1) {
 
 async function createBranchIfNotExists() {
   let branchResult = await checkBranch({
-    Authorization: `Bearer ${core.getInput('access-token')}`,
+    token: core.getInput('access-token'),
     owner: inputOwner,
     repo: inputRepo,
     branchName
@@ -68,17 +68,17 @@ core.debug(`filePaths: ${filePaths}`)
 
 async function uploadAll() {
 
-  // try {
-  //   let branchExists = await createBranchIfNotExists()
-  //   if (!branchExists) {
-  //     core.setFailed(error)
-  //     return
-  //   }
-  // } catch (error) {
-  //   // break off further execution
-  //   core.setFailed(error)
-  //   return
-  // }
+  try {
+    let branchExists = await createBranchIfNotExists()
+    if (!branchExists) {
+      core.setFailed(error)
+      return
+    }
+  } catch (error) {
+    // break off further execution
+    core.setFailed(error)
+    return
+  }
 
   for (let index = 0; index < filePaths.length; index++) {
     const curPath = filePaths[index]

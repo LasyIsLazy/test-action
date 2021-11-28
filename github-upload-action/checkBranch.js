@@ -1,14 +1,15 @@
 /**
  * API: https://docs.github.com/en/rest/reference/repos#get-a-branch
  */
- const axios = require('axios')
  const path = require('path')
  const core = require('@actions/core')
-const { connected } = require('process')
+const github = require("@actions/github");
+
  
  async function checkBranch(
-   { Authorization, owner, repo, branchName }
+   { token, owner, repo, branchName }
  ) {
+  const octokit = github.getOctokit(token);
      
    // load api url from context
    let BASE_URL = process.env.GITHUB_API_URL
@@ -22,15 +23,7 @@ const { connected } = require('process')
      )
    core.debug(`Request URL: ${url}`)
    // load all branches, since we need the info about the default branch as well
-   const res = await axios({
-     method: 'get',
-     url,
-     responseType: 'application/json',
-     headers: {
-       Authorization,
-       'Content-Type': 'application/json'
-     }
-   })
+   const res = await octokit.rest.repos.listBranches({owner, repo})
    .then(({data}) => { 
      // result succesful
      let jsonResult = JSON.stringify(data);
@@ -71,30 +64,30 @@ const { connected } = require('process')
         `/repos/${owner}/${repo}/git/refs`
       )
     core.debug(`Request URL to create new branch: ${branchCreateUrl}`)
-
-    return axios({
-        method: 'post',
-        url: branchCreateUrl,
-        responseType: 'application/json',
-        headers: {
-        Authorization,
-        'Content-Type': 'application/json'
-        },
-        data: {
-            ref: `refs/heads/${branchName}`,
-            sha: defaultBranch.commit.sha
-        }
-    }).then(({ data }) => {
-        core.debug(`Branch with name ${defaultBranch.name} created`)
-        // return non empty object to check on
-        console.log(`Created new branch with ref: ${data.ref} based on ${defaultBranch.name}`)        
-        return { }
-    }).catch(err => {
-        core.debug(`Error creatng new branch: ${err}`)
-        console.log(`Error creating the branch with name ${branchName} and sha ${defaultBranch.commit.sha}: ${error}`)
-        return null
-    })
-    }
+        return {}
+    // return axios({
+    //     method: 'post',
+    //     url: branchCreateUrl,
+    //     responseType: 'application/json',
+    //     headers: {
+    //     Authorization,
+    //     'Content-Type': 'application/json'
+    //     },
+    //     data: {
+    //         ref: `refs/heads/${branchName}`,
+    //         sha: defaultBranch.commit.sha
+    //     }
+    // }).then(({ data }) => {
+    //     core.debug(`Branch with name ${defaultBranch.name} created`)
+    //     // return non empty object to check on
+    //     console.log(`Created new branch with ref: ${data.ref} based on ${defaultBranch.name}`)        
+    //     return { }
+    // }).catch(err => {
+    //     core.debug(`Error creatng new branch: ${err}`)
+    //     console.log(`Error creating the branch with name ${branchName} and sha ${defaultBranch.commit.sha}: ${error}`)
+    //     return null
+    // })
+    // }
  }
  module.exports = checkBranch
  
