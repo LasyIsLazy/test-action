@@ -2,18 +2,20 @@ const github = require('@actions/github')
 const core = require('@actions/core')
 const fs = require('fs').promises
 
-
 async function upload(
     localPath,
     { token, remotePath, owner, repo, commitMessage, branchName }
 ) {
-    core.debug(`upload params:
-    remotePath: ${remotePath}
-    owner: ${owner}
-    repo: ${repo}
-    commitMessage: ${commitMessage}
-    branchName: ${branchName}
-  `)
+    core.debug(
+        `upload params:${JSON.stringify({
+            token,
+            remotePath,
+            owner,
+            repo,
+            commitMessage,
+            branchName,
+        })}`
+    )
     const octokit = github.getOctokit(token)
 
     // Get SHA
@@ -38,7 +40,7 @@ async function upload(
         } else {
             const { status, message } = error
             core.error(`getContent failed. status: ${status}, message: ${message}`)
-            return core.setFailed(message)
+            throw new Error(message)
         }
     }
 
@@ -64,11 +66,11 @@ async function upload(
             core.debug('Same file content, SHA does not changed')
         }
     } catch ({ status, message, response }) {
-        core.debug(
+        core.error(
             `createOrUpdateFileContents Failed. status: ${status}, message: ${message}`
         )
         core.debug(JSON.stringify(response))
-        return core.setFailed(message)
+        throw new Error(message)
     }
 }
 
