@@ -6,7 +6,7 @@ on:
 jobs:
   upload_job:
     runs-on: ubuntu-latest
-    name: Upload
+    name: Upload Action test
     steps:
       - name: Checkout
         uses: actions/checkout@v2
