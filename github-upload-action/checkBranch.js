@@ -35,6 +35,7 @@ async function checkBranch({ token, owner, repo, branchName }) {
         core.debug(
             `Branch with name ${branchName} already exists, continuing as normal`
         )
+        core.debug('✔️ Check branch Done')
         return branch
     } else {
         core.debug(`Need to create a new branch first with name ${branchName}`)
