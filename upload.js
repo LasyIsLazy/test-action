@@ -14,6 +14,7 @@ async function upload(
     commitMessage: ${commitMessage}
     branchName: ${branchName}
   `);
+  core.debug(':heavy_check_mark: upload')
   const octokit = github.getOctokit(token);
 
   // Get SHA
