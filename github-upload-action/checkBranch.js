@@ -87,7 +87,7 @@ const github = require("@actions/github");
     //     console.log(`Error creating the branch with name ${branchName} and sha ${defaultBranch.commit.sha}: ${error}`)
     //     return null
     // })
-    // }
+    }
  }
  module.exports = checkBranch
  
