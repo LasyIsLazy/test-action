@@ -1,82 +1,75 @@
-/**
- * API: https://developer.github.com/v3/repos/contents
- */
-const axios = require('axios')
-const path = require('path')
-const core = require('@actions/core')
+const github = require("@actions/github");
+const core = require("@actions/core");
+const fs = require("fs/promises");
+
 
 async function upload(
-  base64Content,
-  { Authorization, remotePath, owner, repo, commitMessage, branchName }
+  localPath,
+  { token, remotePath, owner, repo, commitMessage, branchName }
 ) {
-    
-  // load api url from context
-  let BASE_URL = process.env.GITHUB_API_URL
-  core.debug(`Using API url: ${BASE_URL}`)
+  core.debug(`upload params:
+    remotePath: ${remotePath}
+    owner: ${owner}
+    repo: ${repo}
+    commitMessage: ${commitMessage}
+    branchName: ${branchName}
+  `);
+  const octokit = github.getOctokit(token);
 
-  const url =
-    BASE_URL +
-    path.posix.join(
-      `/repos/${owner}/${repo}/contents`,
-      // GitHub API will decode the remotePath
-      encodeURIComponent(remotePath)
-    )
-  core.debug(`Request URL: ${url}`)
-  // if content exists
-  const res = await axios({
-    method: 'get',
-    url,
-    responseType: 'application/json',
-    headers: {
-      Authorization,
-      'Content-Type': 'application/json'
-    },
-    data: {
-      ref: branchName
+  // Get SHA
+  let sha = "";
+  try {
+    const { data } = await octokit.rest.repos.getContent({
+      owner,
+      repo,
+      path: remotePath,
+      ref: branchName,
+    });
+    sha = data.sha;
+    core.debug("getContent done");
+    core.debug(JSON.stringify(data));
+  } catch (error) {
+    core.debug("getContent catch");
+    core.debug(JSON.stringify(data));
+    if (error.status === 404) {
+      // 404 means remote repository does not have this file, so we do not need SHA
+      core.debug(`sha does not exist`);
+      sha = "";
+    } else {
+      const { status, message } = error;
+      core.error(`getContent failed. status: ${status}, message: ${message}`);
+      return core.setFailed(message);
     }
-  }).catch(err => {
-    if (err.toString() !== 'Error: Request failed with status code 404') {
-      console.log(err)
-    }
-    // 404 means remote repository does not have this file, so we do not need SHA
-    return { data: { sha: '' } }
-  })
-  const sha = (res.data && res.data.sha) || ''
-  core.debug(`Get SHA: ${sha}`)
+  }
 
-  return axios({
-    method: 'put',
-    url,
-    responseType: 'application/json',
-    headers: {
-      Authorization,
-      'Content-Type': 'application/json'
-    },
-    data: {
+  // Get file base64 content
+  const file = await fs.readFile(localPath, { encoding: "base64" });
+  core.debug(`file base64: ${file}`);
+
+  // Create or update file
+  try {
+    const { data } = await octokit.rest.repos.createOrUpdateFileContents({
+      owner,
+      repo,
+      path: remotePath,
       message: commitMessage,
+      content: file,
+      branch: branchName,
       sha,
-      content: base64Content,
-      branch: branchName
+    });
+    core.debug("createOrUpdateFileContents done");
+    core.debug(JSON.stringify(data));
+    if (data.content.sha === sha) {
+      // Won't create a new commit
+      core.debug("Same file content, SHA does not changed");
     }
-  }).then(({ data }) => {
-    const { path, sha: currentSha } = data.content
-    /**
-     * - sha: remote file's SHA
-     * - currentSha: uploaded file's SHA
-     * Can be use to identify if they are same file
-     */
-    return {
-      uploadPath: path,
-      sha,
-      currentSha
-    }
-  }).catch(err => {
-    if (err.toString() === 'Error: Request failed with status code 409') {
-      core.setFailed(`Conflict when there is a merge conflict or the commit's status checks failed`)
-    }
-    console.log(`Error uploading the file. Check if the branch [${branchName}] exists and if the access-token has write rights.`)
-    core.setFailed(err)
-    return null
-  })
+  } catch ({ status, message, response }) {
+    core.debug(
+      `createOrUpdateFileContents Failed. status: ${status}, message: ${message}`
+    );
+    core.debug(JSON.stringify(response));
+    return core.setFailed(message);
+  }
 }
+
 module.exports = upload

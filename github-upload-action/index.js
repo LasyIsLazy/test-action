@@ -88,12 +88,9 @@ async function uploadAll() {
       path.relative(localDir, curPath)
     )
     console.log(`Upload ${curPath} to ${remotePath} on branch ${branchName} for repository ${inputRepo}`)
-    const base64Content = fs.readFileSync(curPath, {
-      encoding: 'base64'
-    })
     try {
-      let result = await upload(base64Content, {
-        Authorization: `Bearer ${core.getInput('access-token')}`,
+      let result = await upload(curPath, {
+        token: core.getInput('access-token'),
         owner: inputOwner,
         repo: inputRepo,
         commitMessage,
